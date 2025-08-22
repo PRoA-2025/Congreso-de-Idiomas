@@ -1,21 +1,169 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Congreso de Idiomas</title>
-    <link rel="stylesheet" href="styles.css">
+<html>
+  <head>
+    <title>Mapa Escolar</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <style>
+      #map { height: 100vh; width: 100%; }
 
+      .info-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        max-width: 300px;
+      }
+      .info-content img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 6px;
+      }
+      .info-text {
+        flex: 1;
+      }
+      .info-text h3 {
+        margin: 0;
+        font-size: 15px;
+      }
+      .info-text p {
+        font-size: 13px;
+        margin: 4px 0;
+      }
+      .info-text a {
+        display: inline-block;
+        margin-top: 6px;
+        padding: 4px 8px;
+        background: #4285F4;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+      .info-text a:hover {
+        background: #3367D6;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
 
-</head>
-<body>
-    <div class="background">
-        <h1>Bienvenido al Congreso de Idiomas</h1>
+    <script>
+      function initMap() {
+        const centro = { lat: -31.97936, lng: -64.56012 };
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 14,
+          center: centro,
+        });
 
-        <a href="" class="btn">Entrar</a>
-    </div>
-</body>
+        const marcadores = [
+          {
+            nombre: "Salon de Eventos",
+            posicion: { lat: -31.97936, lng: -64.56012 },
+            icono: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
+            logo: "https://imgs.search.brave.com/CoKicq2jYdo9WlbhU1n-rgdAbhG0pjtNSnEToDYxkAU/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/ZWxzaXRpb2RlbGF2/aWxsYS5jb20vZm90/b3MvaW1hZ2VuZXMv/Zm90b18wMDEuanBn",
+            resena: "Espacio ideal para fiestas, reuniones y conferencias."
+          },
+          {
+            nombre: "Casa de la Historia y la Cultura del Bicentenario Villa General Belgrano",
+            posicion: { lat: -31.977438620640584, lng: -64.56053089852956 },
+            icono: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
+            logo: "https://imgs.search.brave.com/ocGNVmguLwwy0bVj2wZPVV4mlGVo1iQasIf_WWpAbLI/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/bWlndWlhZGV0dXJp/c21vLmFyL2Nkbi9j/b250ZW5pZG9zLzIz/Ml9jYXNhLWRlbC1i/aWNlbnRlbmFyaW9f/Zm90bzEucG5n",
+            resena: "Centro cultural con talleres, muestras y actividades artísticas."
+          },
+          {
+            nombre: "Colegio PRoA DS",
+            posicion: { lat: -31.983876, lng: -64.570232 },
+            icono: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+            logo: "https://cdn-icons-png.flaticon.com/512/201/201818.png",
+            resena: "Escuela secundaria orientada en innovación y tecnología."
+          },
+          {
+            nombre: "Cinemat",
+            posicion: { lat: -31.97794, lng: -64.56079 },
+            icono: "https://maps.google.com/mapfiles/ms/icons/purple-dot.png",
+            logo: "https://cdn-icons-png.flaticon.com/512/3159/3159310.png",
+            resena: "Cine local con estrenos nacionales e internacionales."
+          },
+          {
+            nombre: "Centro Vgb",
+            posicion: { lat: -31.977624, lng: -64.559342 },
+            icono: "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
+            logo: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+            resena: "Zona céntrica con comercios y vida social."
+          },
+          {
+            nombre: "Hotel Bonaire",
+            posicion: { lat: -31.97227738267095, lng: -64.57041358490882 },
+            icono: "https://maps.google.com/mapfiles/ms/icons/orange-dot.png",
+            logo: "https://cdn-icons-png.flaticon.com/512/139/139899.png",
+            resena: "Hotel acogedor con restaurante y piscina."
+          },
+          {
+            nombre: "Casa alemana, Asoc. Rosamunde V.G.B.",
+            posicion: { lat: -31.977345772179792, lng: -64.56069810870532 },
+            icono: "https://maps.google.com/mapfiles/ms/icons/pink-dot.png",
+            logo: "https://cdn-icons-png.flaticon.com/512/190/190411.png",
+            resena: "Asociación cultural alemana con actividades tradicionales."
+          },
+          {
+            nombre: "101.9 FM radio V.G.B.",
+            posicion: { lat: -31.979124165918996, lng: -64.56579457874093 },
+            icono: "https://maps.google.com/mapfiles/ms/icons/brown-dot.png",
+            logo: "https://cdn-icons-png.flaticon.com/512/727/727245.png",
+            resena: "Radio local con programación variada."
+          },
+          {
+            nombre: "El carozo",
+            posicion: { lat: -31.983755184648217, lng: -64.56145523661438 },
+            icono: "https://maps.google.com/mapfiles/ms/icons/ltblue-dot.png",
+            logo: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
+            resena: "Tienda de productos regionales y artesanales."
+          },
+          {
+            nombre: "Die Lavendel Chalet",
+            posicion: { lat: -31.95518, lng: -64.53784 },
+            icono: "https://maps.google.com/mapfiles/ms/icons/cyan-dot.png",
+            logo: "https://cdn-icons-png.flaticon.com/512/2331/2331941.png",
+            resena: "Alojamiento rodeado de naturaleza y tranquilidad."
+          },
+          {
+            nombre: "Panacea Hotel Boutique",
+            posicion: { lat: -31.980496571994333, lng: -64.5584284470777 },
+            icono: "https://maps.google.com/mapfiles/ms/icons/violet-dot.png",
+            logo: "https://cdn-icons-png.flaticon.com/512/2331/2331938.png",
+            resena: "Hotel boutique con spa y servicios personalizados."
+          }
+        ];
+
+        marcadores.forEach((m) => {
+          const marker = new google.maps.Marker({
+            position: m.posicion,
+            map,
+            title: m.nombre,
+            icon: m.icono,
+          });
+
+          const infoContent = `
+            <div class="info-content">
+              <img src="${m.logo}" alt="Logo ${m.nombre}">
+              <div class="info-text">
+                <h3>${m.nombre}</h3>
+                <p>${m.resena}</p>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=${m.posicion.lat},${m.posicion.lng}" target="_blank">
+                  Cómo llegar
+                </a>
+              </div>
+            </div>
+          `;
+
+          const info = new google.maps.InfoWindow({ content: infoContent });
+          marker.addListener("click", () => { info.open(map, marker); });
+        });
+      }
+    </script>
+
+  
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmarkUOlPq_QbG9cuO1d2CfReNwza75Wo&callback=initMap"></script>
+  </body>
 </html>
-
-
-
-
